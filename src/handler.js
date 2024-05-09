@@ -103,7 +103,13 @@ const getAllBooksHandler = (request, h) => {
         filteredBooks = filteredBooks.filter((b) => b.finished === (finished === '1'));
     }
 
-    return {
+    // only return id, name, and publisher
+    filteredBooks = filteredBooks.map((b) => ({
+        id: b.id,
+        name: b.name,
+        publisher: b.publisher,
+    }));
+    return {      
         status: 'success',
         data: {
             books: filteredBooks,
@@ -154,12 +160,7 @@ const editBookByIdHandler = (request, h) => {
     } = request.params;
 
     if(id === undefined) {
-        const response = h.response({
-            status: 'fail',
-            message: 'Gagal memperbarui buku. Id tidak ditemukan',
-        });
-        response.code(404);
-        return response;
+        
     }
 
     const {
@@ -219,7 +220,7 @@ const editBookByIdHandler = (request, h) => {
 
     const response = h.response({
         status: 'fail',
-        message: 'Gagal memperbarui catatan. Id tidak ditemukan',
+        message: 'Gagal memperbarui buku. Id tidak ditemukan',
     });
     response.code(404);
     return response;
